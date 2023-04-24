@@ -5,15 +5,15 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { data } = await axios.post(
-      'https://us-central1-nfts-apis.cloudfunctions.net/createroom',
+      'https://iriko.testing.huddle01.com/api/v1/create-room',
       {
         title: 'Huddle01-Test',
-        roomLock: false,
+        hostWallets: ['0x29f54719E88332e70550cf8737293436E9d7b10b'],
       },
       {
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': process.env.API_KEY,
+          'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
         },
       }
     );

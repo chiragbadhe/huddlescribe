@@ -74,6 +74,10 @@ const App = () => {
     console.log("lobby:joined");
   });
 
+
+
+  
+
   return (
     <div className="relative overflow-hidden pb-[40px]">
       <Header />
@@ -107,7 +111,7 @@ const App = () => {
         </div>
 
         <div className=" mt-[25px] w-full flex items-center justify-center">
-          <Menu />
+          <Menu userJoined={false} />
       </div>
 
         <div className="flex border mt-[25px] rounded-[10px] border-white/10">
@@ -157,7 +161,7 @@ const App = () => {
         </div>
       </div>
 
-      {/* <div className="">
+      <div className="">
         <div>
           <h1 className="text-6xl font-bold">
             Welcome to{" "}
@@ -364,7 +368,7 @@ const App = () => {
               ))}
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };
