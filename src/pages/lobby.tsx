@@ -16,32 +16,32 @@ import {
 } from "@huddle01/react/hooks";
 
 import { useDisplayName } from "@huddle01/react/app-utils";
-import Button from "./components/Button";
-import Header from "./components/Header";
-import VideoCard from "./components/Modals/VideoCard";
-import Menu from "./components/Menu";
+import Button from "../components/Button";
+import Header from "../components/Header";
+import VideoCard from "../components/Modals/VideoCard";
+import Menu from "../components/Menu";
 import { Avatar } from "connectkit";
+import Router from "next/router";
+import toast, { Toaster } from "react-hot-toast";
+import { useMenuStore } from "@/hooks/useMenuStore";
 
 const App = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { state, send } = useMeetingMachine();
   const [roomId, setRoomId] = useState("");
   const { initialize } = useHuddle01();
-  const { joinLobby } = useLobby();
 
-  const { address, isConnecting, isDisconnected } = useAccount();
+  const { joinLobby, error } = useLobby();
 
-  const [displayName, setDisplayName] = useState("");
-
+  const { address } = useAccount();
   const { stream: camStream } = useVideo();
   const { joinRoom, leaveRoom } = useRoom();
-
-  // Event Listner
-  useEventListener("lobby:cam-on", () => {
-    if (camStream && videoRef.current) videoRef.current.srcObject = camStream;
-  });
-
   const { isInitialized } = useHuddle01();
+
+  const [displayNameText, setDisplayNameText] = useState("Guest");
+  const { setDisplayName, error: displayNameError } = useDisplayName();
+
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isInitialized) {
@@ -49,54 +49,65 @@ const App = () => {
     }
   }, [initialize, isInitialized]);
 
-  const [hostAddress, setHostAddress] = useState(address);
+  const [hostAddress] = useState(address);
 
-  const handleSubmit = async (event: { preventDefault: () => void }) => {
-    event.preventDefault();
-    try {
-      const res = await fetch("/api/create-room", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ hostAddress }),
+  const handleEnterLobby = async () => {
+    setLoading(true);
+    await fetch("/api/create-room", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ hostAddress }),
+    })
+      .then((res) => res.json())
+      .then(async (data) => {
+        const roomId = data?.data?.roomId;
+        setRoomId(roomId);
+
+        if (roomId) {
+          joinLobby(roomId);
+          joinRoom();
+          Router.push(`/r/${roomId}`);
+        } else {
+          toast("Error Creating Room ");
+        }
+        setLoading(true);
+      })
+      .catch((error) => {
+        console.error(error);
       });
-      const data = await res.json();
-      console.log(data);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDisplayName(e.target.value);
-  };
+  useEventListener("lobby:joined", () => {
+    console.log("lobby:joined");
+  });
 
-  const handleDisplayNameSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert(`Setting display name to: ${displayName}`);
-  };
+  useEventListener("room:joined", () => {
+    console.log("lobby:joined");
+  });
 
   return (
     <div className="relative overflow-hidden pb-[40px]  h-screen">
       <Header />
 
+      <Toaster position="top-right" reverseOrder={false} />
       <div className="asbolute ">
         <div className="gradient2"></div>
 
         <div className="gradient1"></div>
       </div>
 
-      <div className="max-w-[1350px] mt-[125px] mx-auto   z-50 relative">
-        <div className="flex space-x-[20px] h-[400px]">
+      <div className="max-w-[1350px] mt-[110px] mx-auto   z-50 relative">
+        <div className="flex space-x-[20px] h-[470px]">
           <div className="relative w-full">
             <div className=" border h-full relative border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
               <VideoCard
                 text={""}
                 videoRef={null}
                 userId={"0xchetan"}
-                walletAvatar={`${Avatar}`}
                 isCameraOn={true}
+                walletAvatar={""}
               />
             </div>
             <div className="flex items-center justify-center mt-[20px]">
@@ -111,30 +122,32 @@ const App = () => {
                 </span>{" "}
                 <span>🌞</span>
               </p>
+
+              <h3 className="break-words">{JSON.stringify(state.value)}</h3>
+
               <p className="mt-[10px] opacity-70 text-[14px]">
                 Lets make sure youre not having a bad hair day 💇‍♂️ or
                 broadcasting a messy house 🏠 to the world 🌎 - do a quick hair
                 check and tidy up any evidence of your untidy lifestyle 🧹.
               </p>
-              <form onSubmit={handleDisplayNameSubmit}>
-                <label htmlFor="name">Display Name:</label>
-                <input
-                  placeholder="Enter display name ..."
-                  type="text"
-                  id="name"
-                  value={displayName}
-                  onChange={handleNameChange}
-                  className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
-                />
-                <button
-                  className="w-full rounded-[10px] py-[10px] bg-cyan-600 mt-[20px] flex items-center justify-center space-x-[10px] duration-300 hover:bg-cyan-700"
-                  type="submit"
-                >
-                  <Pencil />
 
-                  <span>Set Display Name</span>
-                </button>
-              </form>
+              <input
+                type="text"
+                placeholder="display name"
+                value={displayNameText}
+                onChange={(e) => setDisplayNameText(e.target.value)}
+                className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
+              />
+
+              <div>
+                <Button disabled={loading} onClick={handleEnterLobby}>
+                  {loading
+                    ? "Loading..."
+                    : error
+                    ? `Error: ${error}`
+                    : "Enter Lobby"}
+                </Button>
+              </div>
             </div>
           </div>
         </div>

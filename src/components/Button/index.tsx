@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Button: React.FC<{
   children: React.ReactElement | string;
@@ -8,8 +8,8 @@ const Button: React.FC<{
   return (
     <button
       onClick={onClick}
-      className={`bg-blue-500 px-4 py-3 rounded-lg text-white ${
-        disabled ? 'opacity-50' : ''
+      className={`w-full rounded-[10px] py-[10px] bg-cyan-600 mt-[20px] flex items-center justify-center space-x-[10px] duration-300 hover:bg-cyan-700 ${
+        disabled ? "opacity-50" : ""
       }`}
       disabled={disabled}
     >

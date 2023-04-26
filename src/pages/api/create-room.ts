@@ -8,7 +8,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       'https://iriko.testing.huddle01.com/api/v1/create-room',
       {
         title: 'Huddle01-Test',
-        hostWallets: ['0x29f54719E88332e70550cf8737293436E9d7b10b'],
+        hostWallets: ['0x825720bDA62C450e2989418B19e68e218A800e11'],
       },
       {
         headers: {

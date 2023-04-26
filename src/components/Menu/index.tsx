@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Mic,
   MicOff,
@@ -8,34 +8,39 @@ import {
   Disc2,
   PhoneOff,
 } from "lucide-react";
-import Button from "../Button";
 import Router from "next/router";
 
+import { useMenuStore } from "@/hooks/useMenuStore";
+import { useRoom } from "@huddle01/react/hooks";
+
 type Props = {
-    userJoined : boolean
+  userJoined: boolean;
 };
 
-function Menu({userJoined}: Props) {
+function MenuWithState({ userJoined }: Props) {
   const router = Router;
 
-  const [isMicOn, setIsMicOn] = useState(false);
-  const [isCamOn, setIsCamOn] = useState(false);
-  const [isRecOn, setIsRecOn] = useState(false);
+  const { joinRoom, leaveRoom, isLoading, isRoomJoined, error } = useRoom();
+
+  const { isMicOn, setIsMicOn, isCamOn, setIsCamOn, isRecOn, setIsRecOn } =
+    useMenuStore();
 
   const MicClick = () => {
-    setIsMicOn((prev) => !prev);
+    setIsMicOn(!isMicOn);
   };
 
   const CamClick = () => {
-    setIsCamOn((prev) => !prev);
+    setIsCamOn(!isCamOn);
   };
 
   const RecClick = () => {
-    setIsRecOn((prev) => !prev);
+    setIsRecOn(!isRecOn);
   };
 
   const HandleEndCall = () => {
-    router.push("/");
+    leaveRoom();
+    // router.push("/lobby");
+    console.log(error);
   };
 
   return (
@@ -68,7 +73,4 @@ function Menu({userJoined}: Props) {
   );
 }
 
-export default Menu;
-function setIsOn(arg0: (prev: any) => boolean) {
-  throw new Error("Function not implemented.");
-}
+export default MenuWithState;

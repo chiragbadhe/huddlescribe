@@ -16,10 +16,10 @@ import {
 } from "@huddle01/react/hooks";
 
 import { useDisplayName } from "@huddle01/react/app-utils";
-import Button from "./components/Button";
-import Header from "./components/Header";
-import VideoCard from "./components/Modals/VideoCard";
-import Menu from "./components/Menu";
+import Button from "../components/Button";
+import Header from "../components/Header";
+import VideoCard from "../components/Modals/VideoCard";
+import Menu from "../components/Menu";
 import { Avatar } from "connectkit";
 
 const App = () => {
@@ -74,10 +74,6 @@ const App = () => {
     console.log("lobby:joined");
   });
 
-
-
-  
-
   return (
     <div className="relative overflow-hidden pb-[40px]">
       <Header />
@@ -112,7 +108,7 @@ const App = () => {
 
         <div className=" mt-[25px] w-full flex items-center justify-center">
           <Menu userJoined={false} />
-      </div>
+        </div>
 
         <div className="flex border mt-[25px] rounded-[10px] border-white/10">
           <div className="border-r w-1/2 border-white/10 p-[20px] ">
@@ -161,7 +157,7 @@ const App = () => {
         </div>
       </div>
 
-      <div className="">
+      {/* <div className="">
         <div>
           <h1 className="text-6xl font-bold">
             Welcome to{" "}
@@ -318,20 +314,6 @@ const App = () => {
               STOP_PRODUCING_CAM
             </Button>
 
-            <Button
-              disabled={!startRecording.isCallable}
-              onClick={() =>
-                startRecording(`${window.location.href}rec/${roomId}`)
-              }
-            >
-              {`START_RECORDING error: ${error}`}
-            </Button>
-            <Button
-              disabled={!stopRecording.isCallable}
-              onClick={stopRecording}
-            >
-              STOP_RECORDING
-            </Button>
 
             <Button disabled={!leaveRoom.isCallable} onClick={leaveRoom}>
               LEAVE_ROOM
@@ -368,7 +350,7 @@ const App = () => {
               ))}
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
