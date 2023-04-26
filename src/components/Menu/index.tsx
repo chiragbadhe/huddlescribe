@@ -11,7 +11,7 @@ import {
 import Router from "next/router";
 
 import { useMenuStore } from "@/hooks/useMenuStore";
-import { useRoom } from "@huddle01/react/hooks";
+import { useAudio, useRoom, useVideo } from "@huddle01/react/hooks";
 
 type Props = {
   userJoined: boolean;
@@ -20,17 +20,36 @@ type Props = {
 function MenuWithState({ userJoined }: Props) {
   const router = Router;
 
-  const { joinRoom, leaveRoom, isLoading, isRoomJoined, error } = useRoom();
+  const { joinRoom, leaveRoom, isLoading, isRoomJoined } = useRoom();
+
+  const { fetchVideoStream, stopVideoStream, isProducing, stream, error} = useVideo();
+
+  const { fetchAudioStream, stopAudioStream} = useAudio();
+
+
 
   const { isMicOn, setIsMicOn, isCamOn, setIsCamOn, isRecOn, setIsRecOn } =
     useMenuStore();
 
   const MicClick = () => {
     setIsMicOn(!isMicOn);
+    
+    if(!isMicOn) {
+      fetchAudioStream()
+    }else {
+      stopAudioStream()
+    }
+
   };
 
   const CamClick = () => {
     setIsCamOn(!isCamOn);
+    if(!isCamOn) {
+      fetchVideoStream()
+    }else {
+      stopVideoStream()
+    }
+    console.log(error)
   };
 
   const RecClick = () => {
@@ -40,7 +59,7 @@ function MenuWithState({ userJoined }: Props) {
   const HandleEndCall = () => {
     leaveRoom();
     // router.push("/lobby");
-    console.log(error);
+    // console.log(error);
   };
 
   return (

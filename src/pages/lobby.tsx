@@ -68,7 +68,7 @@ const App = () => {
         if (roomId) {
           joinLobby(roomId);
           joinRoom();
-          Router.push(`/r/${roomId}`);
+          // Router.push(`/r/${roomId}`);
         } else {
           toast("Error Creating Room ");
         }
