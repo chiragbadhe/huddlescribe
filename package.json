@@ -23,10 +23,16 @@
     "postcss": "8.4.23",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-hook-speech-to-text": "^0.8.0",
     "react-hot-toast": "^2.4.0",
+    "react-speech-recognition": "^3.10.0",
     "tailwindcss": "3.3.1",
     "typescript": "5.0.4",
     "wagmi": "^0.12.12",
     "zustand": "^4.3.7"
+  },
+  "devDependencies": {
+    "@babel/plugin-transform-runtime": "^7.21.4",
+    "@types/react-speech-recognition": "^3.9.2"
   }
 }
