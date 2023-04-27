@@ -24,6 +24,7 @@ import { Avatar } from "connectkit";
 import Router, { useRouter } from "next/router";
 import { routes } from "connectkit/build/components/ConnectKit";
 import toast from "react-hot-toast";
+import InitHuddle from "@/components/InitHuddle";
 
 const App = () => {
   const routes = useRouter();
@@ -36,20 +37,22 @@ const App = () => {
 
   const { joinRoom, error, isRoomJoined } = useRoom();
 
-  const { peerIds } = usePeers();
+  const [hasJoined, setHasJoined] = useState(false);
 
   useEffect(() => {
-    console.log(isRoomJoined ? "joined" : "not joined");
-    console.log(isLobbyJoined ? "joined" : "not joined lobby");
-    console.log(peerIds);
-    console.log(error)
-  }, []);
+    if (!isRoomJoined ) {
+      joinLobby("bnh-dmmd-aac");
+      joinRoom();
+      setHasJoined(true);
+    }
+  }, [isRoomJoined, hasJoined, roomId, joinLobby, joinRoom]);
 
   const walletAvatar = address?.startsWith("0x") ? address : undefined;
 
   return (
     <div className="relative overflow-hidden pb-[40px]">
       <Header />
+      <InitHuddle />
 
       <div className="asbolute ">
         <div className="gradient2"></div>

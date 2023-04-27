@@ -24,73 +24,39 @@ import { Avatar } from "connectkit";
 import Router from "next/router";
 import toast, { Toaster } from "react-hot-toast";
 import { useMenuStore } from "@/hooks/useMenuStore";
+import { useRoomId } from "@/hooks/useRoomIdStore";
+import InitHuddle from "@/components/InitHuddle";
 
 const App = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const { state, send } = useMeetingMachine();
-  const [roomId, setRoomId] = useState("");
-  const { initialize } = useHuddle01();
-
-  const { joinLobby, error } = useLobby();
-
-  const { address } = useAccount();
-  const { stream: camStream } = useVideo();
-  const { joinRoom, leaveRoom } = useRoom();
-  const { isInitialized } = useHuddle01();
-
-  const [displayNameText, setDisplayNameText] = useState("Guest");
-  const { setDisplayName, error: displayNameError } = useDisplayName();
-
   const [loading, setLoading] = useState<boolean>(false);
+  const [displayNameText, setDisplayNameText] = useState("");
+  const { error } = useLobby();
+  const { joinRoom, leaveRoom } = useRoom();
 
-  useEffect(() => {
-    if (!isInitialized) {
-      initialize("KL1r3E1yHfcrRbXsT4mcE-3mK60Yc3YR");
-    }
-  }, [initialize, isInitialized]);
 
-  const [hostAddress] = useState(address);
+  const { roomId, setRoomId } = useRoomId();
 
-  const handleEnterLobby = async () => {
-    // setLoading(true);
-    await fetch("/api/create-room", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ hostAddress }),
-    })
-      .then((res) => res.json())
-      .then(async (data) => {
-        const roomId = data?.data?.roomId;
-        setRoomId(roomId);
+  const { joinLobby, isLobbyJoined } = useLobby();
 
-        if (roomId) {
-          joinLobby(roomId);
-          joinRoom();
-          Router.push(`/${roomId}/lobby`);
-        } else {
-          toast("Error Creating Room ");
-        }
-        setLoading(true);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    return; // return void
+  console.log()
+  const handleEnterLobby = () => {
+    joinLobby(`${roomId}`)
+    console.log(error)
+  };
+
+  const handleEnterRoom = () => {
+    Router.push(`/${roomId}`)
   };
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
   });
 
-  useEventListener("room:joined", () => {
-    console.log("lobby:joined");
-  });
-
   return (
     <div className="relative overflow-hidden pb-[40px]  h-screen">
       <Header />
+      <InitHuddle />
+
 
       <Toaster position="top-right" reverseOrder={false} />
       <div className="asbolute ">
@@ -124,8 +90,6 @@ const App = () => {
                 <span>🌞</span>
               </p>
 
-              <h3 className="break-words">{JSON.stringify(state.value)}</h3>
-
               <p className="mt-[10px] opacity-70 text-[14px]">
                 Lets make sure youre not having a bad hair day 💇‍♂️ or
                 broadcasting a messy house 🏠 to the world 🌎 - do a quick hair
@@ -156,6 +120,23 @@ const App = () => {
                     ? `Error: ${error}`
                     : "Enter Lobby"}
                 </Button>
+
+                <Button
+                  disabled={loading}
+                  onClick={(event?: React.MouseEvent<HTMLButtonElement>) => {
+                    if (event) {
+                      event.preventDefault();
+                    }
+                    handleEnterRoom();
+                  }}
+                >
+                  {loading
+                    ? "Loading..."
+                    : error
+                    ? `Error: ${error}`
+                    : "Enter Room"}
+                </Button>
+
               </div>
             </div>
           </div>

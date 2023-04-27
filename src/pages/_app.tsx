@@ -6,6 +6,7 @@ import {
   ConnectKitButton,
   getDefaultClient,
 } from "connectkit";
+import InitHuddle from "@/components/InitHuddle";
 
 const alchemyId = process.env.ALCHEMY_ID;
 
@@ -19,8 +20,8 @@ const client = createClient(
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <WagmiConfig client={client}>
-      <ConnectKitProvider theme="midnight" >
-        <Component {...pageProps} />
+      <ConnectKitProvider theme="midnight">
+          <Component {...pageProps} />
       </ConnectKitProvider>
     </WagmiConfig>
   );

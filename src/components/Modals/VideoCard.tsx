@@ -6,7 +6,7 @@ import { Avatar } from "connectkit";
 import { Address } from "wagmi";
 import { useMenuStore } from "@/hooks/useMenuStore";
 import { Mic, MicOff } from "lucide-react";
-import { useMeetingMachine, useVideo } from "@huddle01/react/hooks";
+import { useMeetingMachine, usePeers, useVideo } from "@huddle01/react/hooks";
 
 type Props = {};
 
@@ -41,6 +41,8 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
 
   const videoElement: VideoElementRef = useRef(null);
 
+  const { peerIds } = usePeers();
+
   useEventListener("lobby:cam-on", () => {
     if (camStream && videoElement.current)
       videoElement.current.srcObject = camStream;
@@ -51,13 +53,21 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
       {isCamOn ? (
         <>
           <video
-            className="w-full h-full object-cover "
+            className="object-cover "
             ref={videoElement}
             autoPlay
             muted
             style={{ transform: "scaleX(-1)" }}
             playsInline
           ></video>
+{/* 
+          {peerIds.map((peerId) => (
+            <Video key={peer.peerId} peerId={peer.peerId} debug />
+          ))}
+
+          {peerIds.map((peerId) => (
+            <Audio key={peer.peerId} peerId={peer.peerId} debug />
+          ))} */}
         </>
       ) : (
         <div className="flex flex-col items-center justify-center h-full w-full">
