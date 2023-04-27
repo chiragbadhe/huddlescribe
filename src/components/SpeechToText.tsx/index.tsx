@@ -1,40 +1,22 @@
 import "regenerator-runtime/runtime";
 
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
-
-import { useEffect, useState } from "react";
-
+import { useSpeechRecognition } from "react-speech-recognition";
+import { useEffect } from "react";
 import { Ghost, Outdent } from "lucide-react";
 import useDisplayTextStore from "@/hooks/useCaptionsStore";
 
+import useLanguageStore from "@/hooks/UseLanguageStore";
+
 const SpeechToText = () => {
   const { caption, setCaption } = useDisplayTextStore();
+
+  const { value, label } = useLanguageStore();
 
   const { transcript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
 
   useEffect(() => {
-    const words = transcript.split(" ");
-
-    // group words into lines of up to 75 characters
-    const lines: string[] = words.reduce((acc: string[], curr: string) => {
-      const lastLine = acc[acc.length - 1];
-      if (lastLine && lastLine.length + curr.length + 1 <= 75) {
-        acc[acc.length - 1] = `${lastLine} ${curr}`;
-      } else {
-        acc.push(curr);
-      }
-      return acc;
-    }, []);
-
-    // map each line to a <div> element
-    const displayLines = lines.map((line, index) => (
-      <div key={index}>{line}</div>
-    ));
-
-    setCaption(displayLines.map((el) => el.props.children).join(" "));
+    setCaption(transcript);
   }, [transcript, setCaption]);
 
   if (!browserSupportsSpeechRecognition) {
@@ -42,42 +24,44 @@ const SpeechToText = () => {
   }
 
   return (
-    <>
-      <div className="flex border mt-[25px] rounded-[10px] border-white/10">
-        <div className="border-r w-1/2 border-white/10 p-[20px] ">
-          <div className="text-[18px] border-b pb-2 border-white/10 opacity-90 flex ">
-            <p className="flex space-x-[7px]">
-              <span>
-                <Ghost />
-              </span>
-              <span>Transcribe</span>
-            </p>
-          </div>
-          <p className="opacity-70 flex mt-[15px] font-extralight	">
-            <span className="font-normal">peerId: </span>
-            <span className="pl-[10px]">{caption}</span>
-          </p>
-        </div>
-        <div className=" p-[20px] w-1/2">
-          <div className="text-[18px] border-b pb-2 border-white/10 opacity-90 flex ">
-            <p className="flex space-x-[7px]">
-              <span>
-                <Outdent />
-              </span>
-              <span>Transcribe</span>
-            </p>
-          </div>
-          <p className="opacity-70 flex mt-[15px] font-extralight">
+    <div className="flex border mt-[25px] rounded-[10px] border-white/10">
+      <div className="border-r w-1/2 border-white/10 p-[20px] ">
+        <div className="text-[18px] justify-between border-b pb-2 border-white/10 opacity-80 flex ">
+          <p className="flex space-x-[7px]">
             <span>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Voluptatem sed repudiandae a officia libero deserunt. Possimus
-              sapiente et vero consequatur corporis cum, maiores ipsam tenetur.
-              Iusto aliquid possimus iste ut?
+              <Ghost />
             </span>
+            <span>Transcribe</span>
           </p>
+          <p className="text-[14px] cursor-not-allowed">lg : {label}</p>
         </div>
+        <p className="opacity-70 flex mt-[15px] font-extralight	">
+          <span className="font-normal">peerId: </span>
+          <span className="pl-[10px]">{caption}</span>
+        </p>
       </div>
-    </>
+      <div className=" p-[20px] w-1/2">
+        <div className="text-[18px]  justify-between items-start duratio-300  border-b pb-2 border-white/10 opacity-80 flex ">
+          <p className="flex space-x-[7px]">
+            <span>
+              <Outdent />
+            </span>
+            <span>Meet Summary</span>
+          </p>
+          <button className="underline underline-offset-3  text-[14px]">
+            Generate Summary
+          </button>
+        </div>
+        <p className="opacity-70 flex mt-[15px] font-extralight">
+          <span>
+            Say goodbye to boring call summaries! Our system uses OpenAI tech to
+            process call captions and generate a comprehensive summary. Never
+            struggle to remember details again. Let our system do the work for
+            you. Its the coolest thing since sliced bread!
+          </span>
+        </p>
+      </div>
+    </div>
   );
 };
 

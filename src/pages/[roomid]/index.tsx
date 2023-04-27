@@ -26,21 +26,14 @@ import { routes } from "connectkit/build/components/ConnectKit";
 import toast from "react-hot-toast";
 import InitHuddle from "@/components/InitHuddle";
 import SpeechToText from "@/components/SpeechToText.tsx";
+import SelectLanguage from "@/components/SelectLanguage";
 
 const App = () => {
   const routes = useRouter();
-
-  console.log(routes);
-
   const roomId = routes?.query?.roomid;
-
-  const { joinLobby, isLobbyJoined } = useLobby();
-
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const { joinLobby} = useLobby();
   const { address } = useAccount();
-
-  const { joinRoom, error, isRoomJoined } = useRoom();
-
+  const { joinRoom, isRoomJoined } = useRoom();
   const [hasJoined, setHasJoined] = useState(false);
 
   useEffect(() => {
@@ -106,7 +99,9 @@ const App = () => {
           <div className="absolute flex items-center justify-center w-full">
             <Menu userJoined={true} />
           </div>
-          <div></div>
+          <div>
+            <SelectLanguage />
+          </div>
         </div>
         <SpeechToText />
       </div>

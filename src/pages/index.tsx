@@ -19,7 +19,7 @@ const App = () => {
   const { roomId } = useRoomId();
   const { joinLobby } = useLobby();
 
-  console.log();
+
   const handleEnterLobby = () => {
     joinLobby(`${roomId}`);
     console.log(error);

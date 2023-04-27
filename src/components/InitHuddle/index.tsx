@@ -14,10 +14,23 @@ function InitHuddle() {
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
-    setIsLobbyJoined(false);
   });
 
-  const handleEnter = async () => {
+  useEffect(() => {
+    if (!islobbyJoined) {
+      return;
+    }
+    const onLobbyJoined = () => {
+      console.log("lobby:joined");
+      setIsLobbyJoined(false);
+    };
+    document.addEventListener("lobby:joined", onLobbyJoined);
+    return () => {
+      document.removeEventListener("lobby:joined", onLobbyJoined);
+    };
+  }, [islobbyJoined]);
+
+  const handleEnter = useCallback(async () => {
     if (islobbyJoined) {
       try {
         const res = await fetch("/api/create-room", {
@@ -32,6 +45,7 @@ function InitHuddle() {
 
         if (newRoomId) {
           setRoomId(newRoomId);
+          setIsLobbyJoined(false);
         } else {
           toast.error("Room Id not set");
         }
@@ -40,17 +54,19 @@ function InitHuddle() {
         toast.error("Failed to set room id.");
       }
     }
-  };
+  }, [islobbyJoined, setRoomId]);
 
   useEffect(() => {
     if (!roomId) {
       handleEnter();
     }
-  }, []);
+  }, [roomId, handleEnter]);
 
-  if (!isInitialized) {
-    initialize("KL1r3E1yHfcrRbXsT4mcE-3mK60Yc3YR");
-  }
+  useEffect(() => {
+    if (!isInitialized) {
+      initialize("KL1r3E1yHfcrRbXsT4mcE-3mK60Yc3YR");
+    }
+  }, [isInitialized, initialize]);
 
   return <div></div>;
 }

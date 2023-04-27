@@ -17,6 +17,7 @@ import { useEventListener } from "@huddle01/react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
+import useLanguageStore from "@/hooks/UseLanguageStore";
 
 type Props = {
   userJoined: boolean;
@@ -38,6 +39,9 @@ function MenuWithState({ userJoined }: Props) {
   } = useVideo();
 
   const { fetchAudioStream, stopAudioStream } = useAudio();
+  
+  const { value, label } = useLanguageStore();
+
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
@@ -49,7 +53,7 @@ function MenuWithState({ userJoined }: Props) {
   const MicClick = () => {
     setIsMicOn(!isMicOn);
     if (!isMicOn) {
-      SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
+      SpeechRecognition.startListening({ continuous: true, language: value });
       fetchAudioStream();
     } else {
       stopAudioStream();
@@ -76,7 +80,6 @@ function MenuWithState({ userJoined }: Props) {
   const HandleEndCall = () => {
     leaveRoom();
     router.push("/");
-    // console.log(error);
   };
 
   return (
