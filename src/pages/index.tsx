@@ -74,7 +74,7 @@ const App = () => {
               </p>
               <input
                 type="text"
-                placeholder="display name"
+                placeholder="Some name here"
                 value={displayNameText}
                 onChange={(e) => setDisplayNameText(e.target.value)}
                 className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
