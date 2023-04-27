@@ -43,9 +43,12 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
 
   const { peerIds, peers } = usePeers();
 
+
+  if (camStream && videoElement.current)
+  videoElement.current.srcObject = camStream;
+
   useEventListener("lobby:cam-on", () => {
-    if (camStream && videoElement.current)
-      videoElement.current.srcObject = camStream;
+ 
   });
 
   console.log(peerIds, peers)
@@ -61,14 +64,9 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
             style={{ transform: "scaleX(-1)" }}
             playsInline
           ></video>
-{/* 
-          {peers.map((peerId) => (
-            <Video key={peer.peerId} peerId={peer.peerId} debug />
-          ))}
+          
 
-          {peerIds.map((peerId) => (
-            <Audio key={peer.peerId} peerId={peer.peerId} debug />
-          ))} */}
+
         </>
       ) : (
         <div className="flex flex-col items-center justify-center h-full w-full">

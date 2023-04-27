@@ -1,0 +1,54 @@
+@use postcss-cssnext;
+:root {
+  --min-size: 5px;
+  --max-size: 10px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.loader {
+  display: flex;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  background: white;
+  margin: 5px;
+  animation-name: loader;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.dot:nth-child(1) {
+  animation-delay: 0.2s;
+}
+.dot:nth-child(2) {
+  animation-delay: 0.4s;
+}
+.dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+.dot:nth-child(4) {
+  animation-delay: 0.8s;
+}
+.dot:nth-child(5) {
+  animation-delay: 1s;
+}
+
+@keyframes loader {
+  from {
+    width: var(--min-size);
+    height: var(--min-size);
+    border-radius: calc(var(--min-size) / 2);
+  }
+  to {
+    width: var(--max-size);
+    height: var(--max-size);
+    border-radius: calc(var(--max-size) / 2);
+  }
+}

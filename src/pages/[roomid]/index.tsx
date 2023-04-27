@@ -72,13 +72,24 @@ const App = () => {
             />
           </div>
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
-            <VideoCard
+            {/* <VideoCard
               text={"lorejncsjdnchnd"}
               videoRef={null}
               userId={"0xchirag"}
               walletAvatar={`${Avatar}`}
               isCameraOn={false}
-            />
+            /> */}
+
+            <div className="flex items-center justify-center h-full opacity-60 flex-col">
+              <div className="loader">
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+                <div className="dot"></div>
+              </div>
+              <p className="text-[20px] pt-[20px]">Waiting For others to join ...</p>
+            </div>
           </div>
         </div>
 

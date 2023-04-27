@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("loadingAnimation.css");
+
+
 html {
   background-color: #0D0E12;
   color: #F4F4F4;
