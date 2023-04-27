@@ -1,12 +1,12 @@
-import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useState } from "react";
 import { Ghost, Outdent } from "lucide-react";
+import useDisplayTextStore from "@/hooks/useCaptionsStore";
 
-const App = () => {
-  const [textToCopy, setTextToCopy] = useState("");
+const SpeechToText = () => {
+    const { caption, setCaption } = useDisplayTextStore();
 
   const startListening = () =>
     SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
@@ -21,10 +21,10 @@ const App = () => {
   // split the transcript into an array of words
   const words = transcript.split(" ");
 
-  // group words into lines of up to 20 characters
+  // group words into lines of up to 75 characters
   const lines: string[] = words.reduce((acc: string[], curr: string) => {
     const lastLine = acc[acc.length - 1];
-    if (lastLine && lastLine.length + curr.length + 1 <= 20) {
+    if (lastLine && lastLine.length + curr.length + 1 <= 75) {
       acc[acc.length - 1] = `${lastLine} ${curr}`;
     } else {
       acc.push(curr);
@@ -36,6 +36,8 @@ const App = () => {
   const displayLines = lines.map((line, index) => (
     <div key={index}>{line}</div>
   ));
+
+  
 
   return (
     <>
@@ -51,18 +53,7 @@ const App = () => {
           </div>
           <p className="opacity-70 flex mt-[15px] font-extralight	">
             <span className="font-normal">peerId: </span>
-            <span className="pl-[10px]">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Voluptatem sed repudiandae a officia libero deserunt.
-            </span>
-          </p>
-
-          <p className="opacity-70 flex mt-[10px] font-extralight	">
-            <span className="font-normal">peerId: </span>
-            <span className="pl-[10px]">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-              Voluptatem sed repudiandae a officia libero deserunt.
-            </span>
+            <span className="pl-[10px]">{displayLines}</span>
           </p>
         </div>
         <div className=" p-[20px] w-1/2">
@@ -84,22 +75,8 @@ const App = () => {
           </p>
         </div>
       </div>
-
-      <div className="container">
-        <div className="main-content" onClick={() => setTextToCopy(transcript)}>
-          {displayLines}
-        </div>
-
-        <div className="btn-style">
-          <button onClick={startListening}>Start Listening</button>
-          <button onClick={SpeechRecognition.stopListening}>
-            Stop Listening
-          </button>
-        </div>
-      </div>
-      
     </>
   );
 };
 
-export default App;
+export default SpeechToText;

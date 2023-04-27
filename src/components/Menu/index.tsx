@@ -14,6 +14,10 @@ import { useMenuStore } from "@/hooks/useMenuStore";
 import { useAudio, usePeers, useRoom, useVideo } from "@huddle01/react/hooks";
 import { useEventListener } from "@huddle01/react";
 
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+
 type Props = {
   userJoined: boolean;
 };
@@ -23,9 +27,17 @@ function MenuWithState({ userJoined }: Props) {
 
   const { joinRoom, leaveRoom, isLoading, isRoomJoined } = useRoom();
 
-  const { fetchVideoStream, stopVideoStream, isProducing, stream,stopProducingVideo, produceVideo, error} = useVideo();
+  const {
+    fetchVideoStream,
+    stopVideoStream,
+    isProducing,
+    stream,
+    stopProducingVideo,
+    produceVideo,
+    error,
+  } = useVideo();
 
-  const { fetchAudioStream, stopAudioStream} = useAudio();
+  const { fetchAudioStream, stopAudioStream } = useAudio();
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
@@ -36,24 +48,25 @@ function MenuWithState({ userJoined }: Props) {
 
   const MicClick = () => {
     setIsMicOn(!isMicOn);
-    
-    if(!isMicOn) {
-      fetchAudioStream()
-    }else {
-      stopAudioStream()
+    if (!isMicOn) {
+      SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
+      fetchAudioStream();
+    } else {
+      stopAudioStream();
+      SpeechRecognition.stopListening();
     }
   };
 
   const CamClick = () => {
     setIsCamOn(!isCamOn);
-    if(!isCamOn) {
-      fetchVideoStream()
-      produceVideo(stream)	
-    }else {
-      stopVideoStream()
-      stopProducingVideo()	
+    if (!isCamOn) {
+      fetchVideoStream();
+      produceVideo(stream);
+    } else {
+      stopVideoStream();
+      stopProducingVideo();
     }
-    console.log(error)
+    console.log(error);
   };
 
   const RecClick = () => {

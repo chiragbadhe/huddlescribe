@@ -1,3 +1,5 @@
+import "regenerator-runtime/runtime";
+
 import React, { useEffect, useRef, useState } from "react";
 import { Ghost, Outdent } from "lucide-react";
 
@@ -25,11 +27,12 @@ import Router, { useRouter } from "next/router";
 import { routes } from "connectkit/build/components/ConnectKit";
 import toast from "react-hot-toast";
 import InitHuddle from "@/components/InitHuddle";
+import SpeechToText from "@/components/SpeechToText.tsx";
 
 const App = () => {
   const routes = useRouter();
 
-  console.log(routes)
+  console.log(routes);
 
   const roomId = routes?.query?.roomid;
 
@@ -91,7 +94,9 @@ const App = () => {
                 <div className="dot"></div>
                 <div className="dot"></div>
               </div>
-              <p className="text-[20px] pt-[20px]">Waiting For others to join ...</p>
+              <p className="text-[20px] pt-[20px]">
+                Waiting For others to join ...
+              </p>
             </div>
           </div>
         </div>
@@ -105,52 +110,7 @@ const App = () => {
           </div>
           <div></div>
         </div>
-
-        <div className="flex border mt-[25px] rounded-[10px] border-white/10">
-          <div className="border-r w-1/2 border-white/10 p-[20px] ">
-            <div className="text-[18px] border-b pb-2 border-white/10 opacity-90 flex ">
-              <p className="flex space-x-[7px]">
-                <span>
-                  <Ghost />
-                </span>
-                <span>Transcribe</span>
-              </p>
-            </div>
-            <p className="opacity-70 flex mt-[15px] font-extralight	">
-              <span className="font-normal">peerId: </span>
-              <span className="pl-[10px]">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Voluptatem sed repudiandae a officia libero deserunt.
-              </span>
-            </p>
-
-            <p className="opacity-70 flex mt-[10px] font-extralight	">
-              <span className="font-normal">peerId: </span>
-              <span className="pl-[10px]">
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Voluptatem sed repudiandae a officia libero deserunt.
-              </span>
-            </p>
-          </div>
-          <div className=" p-[20px] w-1/2">
-            <div className="text-[18px] border-b pb-2 border-white/10 opacity-90 flex ">
-              <p className="flex space-x-[7px]">
-                <span>
-                  <Outdent />
-                </span>
-                <span>Transcribe</span>
-              </p>
-            </div>
-            <p className="opacity-70 flex mt-[15px] font-extralight">
-              <span>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Voluptatem sed repudiandae a officia libero deserunt. Possimus
-                sapiente et vero consequatur corporis cum, maiores ipsam
-                tenetur. Iusto aliquid possimus iste ut?
-              </span>
-            </p>
-          </div>
-        </div>
+        <SpeechToText />
       </div>
     </div>
   );
