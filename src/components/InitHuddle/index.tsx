@@ -7,7 +7,6 @@ import { useEventListener } from "@huddle01/react";
 type Props = {};
 
 function InitHuddle() {
-  const { joinLobby } = useLobby();
   const { roomId, setRoomId } = useRoomId();
   const { initialize, isInitialized } = useHuddle01();
 

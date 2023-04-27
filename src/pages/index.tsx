@@ -1,21 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Ghost, Outdent, Pencil } from "lucide-react";
-
 import { useEventListener, useHuddle01 } from "@huddle01/react";
-import { Audio, Video } from "@huddle01/react/components";
-import Address, { useAccount } from "wagmi";
-
-import {
-  useAudio,
-  useLobby,
-  useMeetingMachine,
-  usePeers,
-  useRoom,
-  useVideo,
-  useRecording,
-} from "@huddle01/react/hooks";
-
-import { useDisplayName } from "@huddle01/react/app-utils";
+import { useLobby } from "@huddle01/react/hooks";
 import Button from "../components/Button";
 import Header from "../components/Header";
 import VideoCard from "../components/Modals/VideoCard";
@@ -79,7 +64,7 @@ const App = () => {
               <p className="text-[28px] font-bold opacity-90 ">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-500">
                   GM Buildoors
-                </span>{" "}
+                </span>
                 <span>🌞</span>
               </p>
               <p className="mt-[10px] opacity-70 text-[14px]">
