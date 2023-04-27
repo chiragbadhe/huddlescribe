@@ -1,5 +1,3 @@
-import "regenerator-runtime/runtime";
-
 import React, { useEffect, useRef, useState } from "react";
 import { Ghost, Outdent } from "lucide-react";
 

@@ -1,43 +1,45 @@
+import "regenerator-runtime/runtime";
+
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
+
 import { Ghost, Outdent } from "lucide-react";
 import useDisplayTextStore from "@/hooks/useCaptionsStore";
 
 const SpeechToText = () => {
-    const { caption, setCaption } = useDisplayTextStore();
-
-  const startListening = () =>
-    SpeechRecognition.startListening({ continuous: true, language: "en-IN" });
+  const { caption, setCaption } = useDisplayTextStore();
 
   const { transcript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
 
+  useEffect(() => {
+    const words = transcript.split(" ");
+
+    // group words into lines of up to 75 characters
+    const lines: string[] = words.reduce((acc: string[], curr: string) => {
+      const lastLine = acc[acc.length - 1];
+      if (lastLine && lastLine.length + curr.length + 1 <= 75) {
+        acc[acc.length - 1] = `${lastLine} ${curr}`;
+      } else {
+        acc.push(curr);
+      }
+      return acc;
+    }, []);
+
+    // map each line to a <div> element
+    const displayLines = lines.map((line, index) => (
+      <div key={index}>{line}</div>
+    ));
+
+    setCaption(displayLines.map((el) => el.props.children).join(" "));
+  }, [transcript, setCaption]);
+
   if (!browserSupportsSpeechRecognition) {
     return null;
   }
-
-  // split the transcript into an array of words
-  const words = transcript.split(" ");
-
-  // group words into lines of up to 75 characters
-  const lines: string[] = words.reduce((acc: string[], curr: string) => {
-    const lastLine = acc[acc.length - 1];
-    if (lastLine && lastLine.length + curr.length + 1 <= 75) {
-      acc[acc.length - 1] = `${lastLine} ${curr}`;
-    } else {
-      acc.push(curr);
-    }
-    return acc;
-  }, []);
-
-  // map each line to a <div> element
-  const displayLines = lines.map((line, index) => (
-    <div key={index}>{line}</div>
-  ));
-
-  
 
   return (
     <>
@@ -53,7 +55,7 @@ const SpeechToText = () => {
           </div>
           <p className="opacity-70 flex mt-[15px] font-extralight	">
             <span className="font-normal">peerId: </span>
-            <span className="pl-[10px]">{displayLines}</span>
+            <span className="pl-[10px]">{caption}</span>
           </p>
         </div>
         <div className=" p-[20px] w-1/2">

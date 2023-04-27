@@ -1,3 +1,4 @@
+import "regenerator-runtime/runtime";
 import React, { MutableRefObject, useEffect, useRef } from "react";
 import { Audio, Video } from "@huddle01/react/components";
 import { useEventListener, useHuddle01 } from "@huddle01/react";
@@ -11,6 +12,7 @@ import {
   usePeers,
   useVideo,
 } from "@huddle01/react/hooks";
+import useDisplayTextStore from "@/hooks/useCaptionsStore";
 
 type Props = {};
 
@@ -35,6 +37,9 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
   const { stream: camStream } = useVideo();
   const { stream: audioStream } = useAudio();
 
+  const { caption, setCaption } = useDisplayTextStore();
+
+
   const { isMicOn, isCamOn } = useMenuStore();
 
   const videoElement: VideoElementRef = useRef(null);
@@ -50,6 +55,9 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
       audioElement.current.srcObject = audioStream;
     }
   }, [camStream, audioStream]);
+
+  const captionWords = caption.split(' ').slice(-10);
+  const captionText = captionWords.join(' ');
 
   return (
     <div className="h-full">
@@ -79,7 +87,7 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
 
       <div className="absolute bottom-[30px] flex items-center justify-center w-full ">
         <p className="bg-black px-[10px] rounded  text-[14px] opacity-50 max-w-[400px]">
-          {text && text}
+          {captionText}
         </p>
       </div>
 
