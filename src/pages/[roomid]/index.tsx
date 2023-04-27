@@ -40,7 +40,7 @@ const App = () => {
   const [hasJoined, setHasJoined] = useState(false);
 
   useEffect(() => {
-    if (!isRoomJoined ) {
+    if (!isRoomJoined) {
       joinLobby("bnh-dmmd-aac");
       joinRoom();
       setHasJoined(true);

@@ -23,11 +23,9 @@ function MenuWithState({ userJoined }: Props) {
 
   const { joinRoom, leaveRoom, isLoading, isRoomJoined } = useRoom();
 
-  const { fetchVideoStream, stopVideoStream, isProducing, stream, error} = useVideo();
+  const { fetchVideoStream, stopVideoStream, isProducing, stream,stopProducingVideo, produceVideo, error} = useVideo();
 
   const { fetchAudioStream, stopAudioStream} = useAudio();
-
-
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
@@ -50,8 +48,10 @@ function MenuWithState({ userJoined }: Props) {
     setIsCamOn(!isCamOn);
     if(!isCamOn) {
       fetchVideoStream()
+      produceVideo(stream)	
     }else {
       stopVideoStream()
+      stopProducingVideo()	
     }
     console.log(error)
   };

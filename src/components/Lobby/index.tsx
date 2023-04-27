@@ -23,9 +23,9 @@ import Menu from "../../components/Menu";
 import { Avatar } from "connectkit";
 import Router, { useRouter } from "next/router";
 
-type LobbyProps = {};
+const App = () => {
+  const { state, send } = useMeetingMachine();
 
-const App = ({}: LobbyProps) => {
   const route = useRouter();
   const { roomid } = route.query;
   const [roomId] = useState(roomid);
@@ -33,9 +33,15 @@ const App = ({}: LobbyProps) => {
 
   console.log(roomId);
 
-  useEffect(() => {
-    // Router.replace(`/${roomId}`)
-  });
+  const handleEnterRoom = async () => {
+    Router.push(`/${roomId}`);
+    joinRoom();
+    return; // return void
+  };
+
+  useEffect (() => {
+    Router.replace("/${roomId")
+  })
 
   return (
     <div className="max-w-[1350px] mt-[110px] mx-auto   z-50 relative">
@@ -70,7 +76,16 @@ const App = ({}: LobbyProps) => {
             </p>
 
             <div>
-              <Button onClick={() => joinRoom()}>Enter Room</Button>
+              <Button
+                onClick={(event?: React.MouseEvent<HTMLButtonElement>) => {
+                  if (event) {
+                    event.preventDefault();
+                  }
+                  handleEnterRoom();
+                }}
+              >
+                Enter Room
+              </Button>
             </div>
           </div>
         </div>

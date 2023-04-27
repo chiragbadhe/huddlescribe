@@ -41,19 +41,20 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
 
   const videoElement: VideoElementRef = useRef(null);
 
-  const { peerIds } = usePeers();
+  const { peerIds, peers } = usePeers();
 
   useEventListener("lobby:cam-on", () => {
     if (camStream && videoElement.current)
       videoElement.current.srcObject = camStream;
   });
 
+  console.log(peerIds, peers)
   return (
     <div className="h-full">
       {isCamOn ? (
         <>
           <video
-            className="object-cover "
+            className="object-cover w-full h-full"
             ref={videoElement}
             autoPlay
             muted
@@ -61,7 +62,7 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
             playsInline
           ></video>
 {/* 
-          {peerIds.map((peerId) => (
+          {peers.map((peerId) => (
             <Video key={peer.peerId} peerId={peer.peerId} debug />
           ))}
 
