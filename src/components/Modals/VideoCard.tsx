@@ -1,12 +1,16 @@
 import React, { MutableRefObject, useEffect, useRef } from "react";
 import { Audio, Video } from "@huddle01/react/components";
 import { useEventListener, useHuddle01 } from "@huddle01/react";
-
 import { Avatar } from "connectkit";
 import { Address } from "wagmi";
 import { useMenuStore } from "@/hooks/useMenuStore";
 import { Mic, MicOff } from "lucide-react";
-import { useMeetingMachine, usePeers, useVideo } from "@huddle01/react/hooks";
+import {
+  useAudio,
+  useMeetingMachine,
+  usePeers,
+  useVideo,
+} from "@huddle01/react/hooks";
 
 type Props = {};
 
@@ -25,33 +29,28 @@ type State = {
 };
 
 type VideoElementRef = MutableRefObject<HTMLVideoElement | null>;
+type AudioElementRef = MutableRefObject<HTMLAudioElement | null>;
 
 function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
-  const {
-    fetchVideoStream,
-    stopVideoStream,
-    isProducing,
-    stream,
-    error,
-    stream: camStream,
-  } = useVideo();
+  const { stream: camStream } = useVideo();
+  const { stream: audioStream } = useAudio();
 
-  const { isMicOn, setIsMicOn, isCamOn, setIsCamOn, isRecOn, setIsRecOn } =
-    useMenuStore();
+  const { isMicOn, isCamOn } = useMenuStore();
 
   const videoElement: VideoElementRef = useRef(null);
+  const audioElement: AudioElementRef = useRef(null);
 
   const { peerIds, peers } = usePeers();
 
+  useEffect(() => {
+    if (camStream && videoElement.current) {
+      videoElement.current.srcObject = camStream;
+    }
+    if (audioStream && audioElement.current) {
+      audioElement.current.srcObject = audioStream;
+    }
+  }, [camStream, audioStream]);
 
-  if (camStream && videoElement.current)
-  videoElement.current.srcObject = camStream;
-
-  useEventListener("lobby:cam-on", () => {
- 
-  });
-
-  console.log(peerIds, peers)
   return (
     <div className="h-full">
       {isCamOn ? (
@@ -64,9 +63,8 @@ function VideoCard({ text, videoRef, userId, walletAvatar }: VideoCardProps) {
             style={{ transform: "scaleX(-1)" }}
             playsInline
           ></video>
-          
 
-
+          <audio ref={audioElement} autoPlay muted />
         </>
       ) : (
         <div className="flex flex-col items-center justify-center h-full w-full">

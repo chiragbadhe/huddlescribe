@@ -28,7 +28,10 @@ import InitHuddle from "@/components/InitHuddle";
 
 const App = () => {
   const routes = useRouter();
-  const roomId = routes?.query?.roomId;
+
+  console.log(routes)
+
+  const roomId = routes?.query?.roomid;
 
   const { joinLobby, isLobbyJoined } = useLobby();
 

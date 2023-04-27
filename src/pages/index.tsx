@@ -31,40 +31,33 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [displayNameText, setDisplayNameText] = useState("");
   const { error } = useLobby();
-  const { joinRoom, leaveRoom } = useRoom();
+  const { roomId } = useRoomId();
+  const { joinLobby } = useLobby();
 
-
-  const { roomId, setRoomId } = useRoomId();
-
-  const { joinLobby, isLobbyJoined } = useLobby();
-
-  console.log()
+  console.log();
   const handleEnterLobby = () => {
-    joinLobby(`${roomId}`)
-    console.log(error)
+    joinLobby(`${roomId}`);
+    console.log(error);
   };
 
   const handleEnterRoom = () => {
-    Router.push(`/${roomId}`)
+    Router.push(`/${roomId}`);
   };
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
+    toast("Lobby joined");
   });
 
   return (
     <div className="relative overflow-hidden pb-[40px]  h-screen">
       <Header />
       <InitHuddle />
-
-
       <Toaster position="top-right" reverseOrder={false} />
       <div className="asbolute ">
         <div className="gradient2"></div>
-
         <div className="gradient1"></div>
       </div>
-
       <div className="max-w-[1350px] mt-[110px] mx-auto   z-50 relative">
         <div className="flex space-x-[20px] h-[470px]">
           <div className="relative w-full">
@@ -89,13 +82,11 @@ const App = () => {
                 </span>{" "}
                 <span>🌞</span>
               </p>
-
               <p className="mt-[10px] opacity-70 text-[14px]">
                 Lets make sure youre not having a bad hair day 💇‍♂️ or
                 broadcasting a messy house 🏠 to the world 🌎 - do a quick hair
                 check and tidy up any evidence of your untidy lifestyle 🧹.
               </p>
-
               <input
                 type="text"
                 placeholder="display name"
@@ -103,7 +94,6 @@ const App = () => {
                 onChange={(e) => setDisplayNameText(e.target.value)}
                 className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
               />
-
               <div>
                 <Button
                   disabled={loading}
@@ -136,7 +126,6 @@ const App = () => {
                     ? `Error: ${error}`
                     : "Enter Room"}
                 </Button>
-
               </div>
             </div>
           </div>
