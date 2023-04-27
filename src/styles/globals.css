@@ -27,7 +27,9 @@ html {
   position: absolute;
   width: 2564px;
   height: 1433px;
-  left: 318px;
-  top: 141px;
+  right: -1900px;
+  bottom: -550px;
   background: radial-gradient(50% 50% at 50% 50%, rgba(0, 242, 228, 0.1) 0%, rgba(217, 217, 217, 0) 100%);
 }
+
+

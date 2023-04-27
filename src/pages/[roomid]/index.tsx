@@ -47,7 +47,7 @@ const App = () => {
   const walletAvatar = address?.startsWith("0x") ? address : undefined;
 
   return (
-    <div className="relative overflow-hidden pb-[40px]">
+    <div className="relative overflow-hidden h-screen pb-[40px]">
       <Header />
       <InitHuddle />
 
