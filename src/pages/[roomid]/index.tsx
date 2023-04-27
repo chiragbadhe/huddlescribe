@@ -23,31 +23,27 @@ import Menu from "../../components/Menu";
 import { Avatar } from "connectkit";
 import Router, { useRouter } from "next/router";
 import { routes } from "connectkit/build/components/ConnectKit";
+import toast from "react-hot-toast";
 
 const App = () => {
   const routes = useRouter();
   const roomId = routes?.query?.roomId;
 
-  
+  const { joinLobby, isLobbyJoined } = useLobby();
 
   const videoRef = useRef<HTMLVideoElement>(null);
   const { address } = useAccount();
 
-  const { joinRoom, error } = useRoom();
+  const { joinRoom, error, isRoomJoined } = useRoom();
+
+  const { peerIds } = usePeers();
 
   useEffect(() => {
-    if(joinRoom.isCallable) {
-      joinRoom();
-    }
-  },[joinRoom]);
-
-  useEventListener("lobby:joined", () => {
-    console.log("lobby:joined");
-  });
-
-  useEventListener("room:joined", () => {
-    console.log("lobby:joined");
-  });
+    console.log(isRoomJoined ? "joined" : "not joined");
+    console.log(isLobbyJoined ? "joined" : "not joined lobby");
+    console.log(peerIds);
+    console.log(error)
+  }, []);
 
   const walletAvatar = address?.startsWith("0x") ? address : undefined;
 
@@ -73,13 +69,13 @@ const App = () => {
             />
           </div>
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
-            {/* <VideoCard
+            <VideoCard
               text={"lorejncsjdnchnd"}
               videoRef={null}
               userId={"0xchirag"}
               walletAvatar={`${Avatar}`}
               isCameraOn={false}
-            /> */}
+            />
           </div>
         </div>
 

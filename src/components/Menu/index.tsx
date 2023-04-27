@@ -11,7 +11,8 @@ import {
 import Router from "next/router";
 
 import { useMenuStore } from "@/hooks/useMenuStore";
-import { useAudio, useRoom, useVideo } from "@huddle01/react/hooks";
+import { useAudio, usePeers, useRoom, useVideo } from "@huddle01/react/hooks";
+import { useEventListener } from "@huddle01/react";
 
 type Props = {
   userJoined: boolean;
@@ -28,6 +29,10 @@ function MenuWithState({ userJoined }: Props) {
 
 
 
+  useEventListener("lobby:joined", () => {
+    console.log("lobby:joined");
+  });
+
   const { isMicOn, setIsMicOn, isCamOn, setIsCamOn, isRecOn, setIsRecOn } =
     useMenuStore();
 
@@ -39,7 +44,6 @@ function MenuWithState({ userJoined }: Props) {
     }else {
       stopAudioStream()
     }
-
   };
 
   const CamClick = () => {
@@ -58,7 +62,7 @@ function MenuWithState({ userJoined }: Props) {
 
   const HandleEndCall = () => {
     leaveRoom();
-    // router.push("/lobby");
+    router.push("/");
     // console.log(error);
   };
 
