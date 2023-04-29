@@ -84,7 +84,6 @@ const App = () => {
 
   console.log(meetingDetails?.title);
 
-  const walletAvatar = address?.startsWith("0x") ? address : undefined;
 
   console.log(peers);
   return (
@@ -104,11 +103,6 @@ const App = () => {
         <div className="flex space-x-[20px] h-[400px]">
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
             <VideoCard
-              text={"lorejncsjdnchnd"}
-              videoRef={null}
-              userId={"0xchetan"}
-              walletAvatar={`${walletAvatar}`}
-              isCameraOn={true}
             />
           </div>
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">

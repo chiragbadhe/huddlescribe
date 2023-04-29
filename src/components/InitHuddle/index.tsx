@@ -39,7 +39,7 @@ function InitHuddle() {
         const response = await axios.post(
           "/api/create-room",
           {
-            title: "HuddleScribe",
+            title: "HuddleScribe Demo Meet",
             hostWallets: [address],
           },
           {

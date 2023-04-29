@@ -12,16 +12,25 @@ import { useMenuStore } from "@/hooks/useMenuStore";
 import { useRoomId } from "@/hooks/useRoomIdStore";
 import InitHuddle from "@/components/InitHuddle";
 
+import { useDisplayName } from "@huddle01/react/app-utils";
+
 const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [roomTitleText, setRoomTitleText] = useState("");
+  const [displayNameText, setDisplayNameText] = useState("");
   const { error } = useLobby();
   const { roomId } = useRoomId();
   const { joinLobby } = useLobby();
 
+  const {
+    setDisplayName,
+    error: displayNameError,
+    displayName,
+  } = useDisplayName();
+
   const handleEnterLobby = () => {
     joinLobby(`${roomId}`);
-    console.log(error);
+    console.log(error, displayNameError, "sucess");
+    setDisplayName(displayNameText);
   };
 
   const handleEnterRoom = () => {
@@ -29,7 +38,7 @@ const App = () => {
   };
 
   useEventListener("lobby:joined", () => {
-    console.log("lobby:joined");
+    console.log("lobby:joined", displayName);
     toast("Lobby joined");
   });
 
@@ -46,13 +55,7 @@ const App = () => {
         <div className="flex space-x-[20px] h-[470px]">
           <div className="relative w-full">
             <div className=" border h-full relative border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
-              <VideoCard
-                text={""}
-                videoRef={null}
-                userId={"0xchetan"}
-                isCameraOn={true}
-                walletAvatar={""}
-              />
+              <VideoCard />
             </div>
             <div className="flex items-center justify-center mt-[20px]">
               <Menu userJoined={true} />
@@ -74,8 +77,8 @@ const App = () => {
               <input
                 type="text"
                 placeholder="Room title here"
-                value={roomTitleText}
-                onChange={(e) => setRoomTitleText(e.target.value)}
+                value={displayNameText}
+                onChange={(e) => setDisplayNameText(e.target.value)}
                 className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
               />
               <div>

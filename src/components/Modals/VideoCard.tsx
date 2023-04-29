@@ -7,15 +7,11 @@ import { Mic, MicOff } from "lucide-react";
 import { useAudio, usePeers, useVideo } from "@huddle01/react/hooks";
 import useDisplayTextStore from "@/hooks/useCaptionsStore";
 import { useEnsName } from "wagmi";
+import { useDisplayName } from "@huddle01/react/app-utils";
 
 type Props = {};
 
 interface VideoCardProps {
-  text: string;
-  videoRef?: React.RefObject<HTMLVideoElement> | null;
-  userId: string;
-  walletAvatar: string;
-  isCameraOn: boolean;
 }
 
 type State = {
@@ -30,6 +26,9 @@ type AudioElementRef = MutableRefObject<HTMLAudioElement | null>;
 function VideoCard({}: VideoCardProps) {
   const { stream: camStream } = useVideo();
   const { stream: audioStream } = useAudio();
+
+  const { error: displayNameError, displayName } = useDisplayName();
+
 
   const { caption, setCaption } = useDisplayTextStore();
 
