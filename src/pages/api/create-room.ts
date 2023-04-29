@@ -1,24 +1,23 @@
-import axios from 'axios';
-import Router from 'next/router';
-
-import type { NextApiRequest, NextApiResponse } from 'next';
+import axios from "axios";
+import { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const { title, hostWallets } = req.body;
+
     const { data } = await axios.post(
-      'https://iriko.testing.huddle01.com/api/v1/create-room',
+      "https://iriko.testing.huddle01.com/api/v1/create-room",
       {
-        title: 'Huddle01-Test',
-        hostWallets: ['0x825720bDA62C450e2989418B19e68e218A800e11'],
+        title,
+        hostWallets,
       },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': process.env.NEXT_PUBLIC_API_KEY,
+          "Content-Type": "application/json",
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
         },
       }
     );
-
 
     res.status(200).json(data);
   } catch (error) {

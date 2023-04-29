@@ -14,11 +14,10 @@ import InitHuddle from "@/components/InitHuddle";
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [displayNameText, setDisplayNameText] = useState("");
+  const [roomTitleText, setRoomTitleText] = useState("");
   const { error } = useLobby();
   const { roomId } = useRoomId();
   const { joinLobby } = useLobby();
-
 
   const handleEnterLobby = () => {
     joinLobby(`${roomId}`);
@@ -74,9 +73,9 @@ const App = () => {
               </p>
               <input
                 type="text"
-                placeholder="Some name here"
-                value={displayNameText}
-                onChange={(e) => setDisplayNameText(e.target.value)}
+                placeholder="Room title here"
+                value={roomTitleText}
+                onChange={(e) => setRoomTitleText(e.target.value)}
                 className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
               />
               <div>

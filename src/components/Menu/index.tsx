@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Mic,
   MicOff,
@@ -17,7 +17,7 @@ import { useEventListener } from "@huddle01/react";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import useLanguageStore from "@/hooks/UseLanguageStore";
+import useLanguageStore from "@/hooks/useLanguageStore";
 
 type Props = {
   userJoined: boolean;
@@ -39,9 +39,8 @@ function MenuWithState({ userJoined }: Props) {
   } = useVideo();
 
   const { fetchAudioStream, stopAudioStream } = useAudio();
-  
-  const { value, label } = useLanguageStore();
 
+  const { value, label } = useLanguageStore();
 
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");

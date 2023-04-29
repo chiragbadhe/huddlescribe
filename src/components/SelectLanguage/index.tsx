@@ -1,5 +1,5 @@
 import { SetStateAction } from "react";
-import useLanguageStore from "@/hooks/UseLanguageStore";
+import useLanguageStore from "@/hooks/useLanguageStore";
 
 //Supports 77 languages
 const languageOptions = [

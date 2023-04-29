@@ -11,7 +11,7 @@ function Header({}: Props) {
   const { roomId, setRoomId } = useRoomId();
 
   return (
-    <div className=" border-b border-white/10 w-full">
+    <div className=" border-b border-white/10 w-full relative z-10">
       <div className="container mx-auto max-w-[1350px] py-[10px] flex justify-between items-center">
         <div>
           <Logo />

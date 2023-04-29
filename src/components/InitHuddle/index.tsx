@@ -3,12 +3,15 @@ import React, { useEffect, useCallback, useState } from "react";
 import toast from "react-hot-toast";
 import { useRoomId } from "@/hooks/useRoomIdStore";
 import { useEventListener } from "@huddle01/react";
+import axios from "axios";
+import { useAccount } from "wagmi";
 
 type Props = {};
 
 function InitHuddle() {
   const { roomId, setRoomId } = useRoomId();
   const { initialize, isInitialized } = useHuddle01();
+  const { address } = useAccount();
 
   const [islobbyJoined, setIsLobbyJoined] = useState(true);
 
@@ -33,18 +36,23 @@ function InitHuddle() {
   const handleEnter = useCallback(async () => {
     if (islobbyJoined) {
       try {
-        const res = await fetch("/api/create-room", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+        const response = await axios.post(
+          "/api/create-room",
+          {
+            title: "HuddleScribe",
+            hostWallets: [address],
           },
-        });
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-        const data = await res.json();
-        const newRoomId = await data?.data?.roomId;
+        const roomId = response?.data?.data?.roomId;
 
-        if (newRoomId) {
-          setRoomId(newRoomId);
+        if (roomId) {
+          setRoomId(roomId);
           setIsLobbyJoined(false);
         } else {
           toast.error("Room Id not set");
@@ -54,7 +62,7 @@ function InitHuddle() {
         toast.error("Failed to set room id.");
       }
     }
-  }, [islobbyJoined, setRoomId]);
+  }, [islobbyJoined, setRoomId, address]);
 
   useEffect(() => {
     if (!roomId) {

@@ -3,7 +3,7 @@ import {create} from "zustand";
 
 type State = {
   roomId: string | null;
-  setRoomId: (roomId: string | null) => void;
+  setRoomId: (roomId: string) => void;
 };
 
 const useRoomIdStore = create<State>((set) => ({

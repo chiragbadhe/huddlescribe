@@ -57,6 +57,12 @@ function VideoCard({}: VideoCardProps) {
   const captionWords = caption.split(" ").slice(-10);
   const captionText = captionWords.join(" ");
 
+  const name = isLoading
+    ? "loading..."
+    : isError
+    ? "error"
+    : data ?? "No name found 😔";
+
   return (
     <div className="h-full">
       {isCamOn ? (
@@ -79,13 +85,7 @@ function VideoCard({}: VideoCardProps) {
               <Avatar size={115} address={address} />
             </div>
           </div>
-          <p className="pt-[10px] opacity-70">
-            {isLoading
-              ? "loading..."
-              : isError
-              ? "error"
-              : data || "No name found 😔"}
-          </p>
+          <p className="pt-[10px] opacity-70">{name}</p>
         </div>
       )}
 
