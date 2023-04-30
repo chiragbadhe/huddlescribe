@@ -18,7 +18,14 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import useLanguageStore from "@/hooks/useLanguageStore";
+import { useReactMediaRecorder } from "react-media-recorder";
 import { useVideoStore } from "@/hooks/useVideoStore";
+
+import dynamic from "next/dynamic";
+
+const ReactMediaRecorder = dynamic(() => import('react-media-recorder').then((mod) => mod.ReactMediaRecorder), {
+  ssr: false,
+});
 
 type Props = {
   userJoined: boolean;
@@ -44,7 +51,16 @@ function MenuWithState({ userJoined }: Props) {
   const { value, label } = useLanguageStore();
 
   const { setVideoSrc, videoSrc } = useVideoStore();
-  
+
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useReactMediaRecorder({
+      video: true,
+      screen: true,
+      onStop: (blobUrl) => {
+        setVideoSrc(blobUrl);
+      },
+    }); // cast the options object to the new type
+
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
   });
@@ -77,6 +93,16 @@ function MenuWithState({ userJoined }: Props) {
 
   const RecClick = () => {
     setIsRecOn(!isRecOn);
+
+    if (!isRecOn) {
+      startRecording();
+    } else {
+      stopRecording();
+      const a = document.createElement("a");
+      a.href = mediaBlobUrl?.toString() ?? "";
+      a.download = "recording.webm";
+      a.click();
+    }
   };
 
   const HandleEndCall = () => {

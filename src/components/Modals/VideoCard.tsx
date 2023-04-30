@@ -88,8 +88,6 @@ function VideoCard({}: VideoCardProps) {
         </div>
       )}
 
-      <div className="h-[130px] w-[130px] border"></div>
-
       <div className="absolute bottom-[30px] flex items-center justify-center w-full ">
         <p className="bg-black px-[10px] rounded  text-[14px] opacity-50 max-w-[400px]">
           {captionText}

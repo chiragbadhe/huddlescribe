@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useMenuStore } from "@/hooks/useMenuStore";
 import { useRoomId } from "@/hooks/useRoomIdStore";
 import InitHuddle from "@/components/InitHuddle";
+import { Text } from "lucide-react";
 
 import { useDisplayName } from "@huddle01/react/app-utils";
 
@@ -43,7 +44,7 @@ const App = () => {
   });
 
   return (
-    <div className="relative overflow-hidden pb-[40px]  h-screen">
+    <div className="relative overflow-hidden pb-[40px] min-h-screen">
       <Header />
       <InitHuddle />
       <Toaster position="top-right" reverseOrder={false} />
@@ -63,7 +64,7 @@ const App = () => {
           </div>
           <div className="relative  w-full flex items-center justify-center space-y-[10px] flex-col rounded-[10px] overflow-hidden ">
             <div className="max-w-[400px]">
-              <p className="text-[28px] font-bold opacity-90 ">
+              <p className="text-[28px] font-bold opacity-90 space-x-2">
                 <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-500 to-blue-500">
                   GM Buildoors
                 </span>
@@ -76,7 +77,7 @@ const App = () => {
               </p>
               <input
                 type="text"
-                placeholder="Room title here"
+                placeholder="Display name here 🖊️"
                 value={displayNameText}
                 onChange={(e) => setDisplayNameText(e.target.value)}
                 className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"

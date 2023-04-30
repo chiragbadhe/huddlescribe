@@ -28,6 +28,8 @@ import InitHuddle from "@/components/InitHuddle";
 import SpeechToText from "@/components/SpeechToText.tsx";
 import SelectLanguage from "@/components/SelectLanguage";
 import axios from "axios";
+import Recorder from "@/components/Recorder";
+import { useVideoStore } from "@/hooks/useVideoStore";
 
 type MeetingDetails = {
   roomId: string;
@@ -49,6 +51,7 @@ const App = () => {
   const { address } = useAccount();
   const { joinRoom, isRoomJoined } = useRoom();
   const [hasJoined, setHasJoined] = useState(false);
+  const { videoSrc, setVideoSrc } = useVideoStore();
 
   const [meetingDetails, setMeetingDetails] = useState<MeetingDetails>();
 
@@ -60,6 +63,7 @@ const App = () => {
         joinLobby(roomId);
       }
       joinRoom();
+      toast("rooom joined");
       setHasJoined(true);
     }
   }, [isRoomJoined, hasJoined, roomId, joinLobby, joinRoom]);
@@ -84,10 +88,9 @@ const App = () => {
 
   console.log(meetingDetails?.title);
 
-
   console.log(peers);
   return (
-    <div className="relative overflow-hidden h-screen pb-[40px]">
+    <div className="relative overflow-hidden min-h-screen pb-[40px]">
       <Header />
       <InitHuddle />
 
@@ -100,13 +103,14 @@ const App = () => {
         <div className="mb-[12px] opacity-60">
           <p className="text-[18px]">Meeting: {meetingDetails?.title}</p>
         </div>
+
+        <Recorder />
+
         <div className="flex space-x-[20px] h-[400px]">
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
-            <VideoCard
-            />
+            <VideoCard />
           </div>
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
-
             <div className="flex items-center justify-center h-full opacity-60 flex-col">
               <div className="loader">
                 <div className="dot"></div>
@@ -134,6 +138,30 @@ const App = () => {
           </div>
         </div>
         <SpeechToText />
+        <div className="flex items-start  mt-12 w-full">
+          {videoSrc && (
+            <>
+              <div className="flex flex-col w-1/2">
+                <p className="opacity-60 text-[20px]">Recoarded Video</p>
+                <video
+                  className="rounded-[10px] border border-white/10  mt-[16px]"
+                  src={videoSrc}
+                  controls
+                />
+              </div>
+              <div className="flex flex-col w-1/2 pl-[20px]">
+                <p className="opacity-60 text-[20px]">Video Details</p>
+
+                <div className="pt-[16px] opacity-70 space-y-[10px] font-thin">
+                  <p>Url: {videoSrc}</p>
+                  <p>Title : test tile.webp</p>
+                  <p>CID : test tile.webp</p>
+                  <p>CID : test tile.webp</p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );
