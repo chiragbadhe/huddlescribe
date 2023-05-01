@@ -104,7 +104,7 @@ const App = () => {
           <p className="text-[18px]">Meeting: {meetingDetails?.title}</p>
         </div>
 
-        <Recorder />
+        {/* <Recorder /> */}
 
         <div className="flex space-x-[20px] h-[400px]">
           <div className="relative w-full border border-white/10 bg-white/5 rounded-[10px] overflow-hidden">
