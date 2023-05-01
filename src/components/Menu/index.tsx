@@ -100,18 +100,6 @@ function MenuWithState({ userJoined }: Props) {
 
   const [permission, setPermission] = useState<string | null>(null);
 
-  useEffect(() => {
-    navigator.mediaDevices
-      .getUserMedia({ audio: true, video: true })
-      .then((stream) => {
-        setPermission("granted");
-        console.log("Recording permission granted");
-      })
-      .catch((error) => {
-        console.error("Recording permission denied", error);
-        setPermission("denied");
-      });
-  }, []);
 
   const RecClick = () => {
     setIsRecOn(!isRecOn);
