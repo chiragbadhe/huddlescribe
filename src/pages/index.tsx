@@ -14,6 +14,7 @@ import InitHuddle from "@/components/InitHuddle";
 import { Text } from "lucide-react";
 
 import { useDisplayName } from "@huddle01/react/app-utils";
+import { useAccount } from "wagmi";
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,6 +22,7 @@ const App = () => {
   const { error } = useLobby();
   const { roomId } = useRoomId();
   const { joinLobby } = useLobby();
+  const { address, isConnecting, isDisconnected } = useAccount();
 
   const {
     setDisplayName,
@@ -100,7 +102,7 @@ const App = () => {
                 </Button>
 
                 <Button
-                  disabled={loading}
+                  disabled={loading || !address}
                   onClick={(event?: React.MouseEvent<HTMLButtonElement>) => {
                     if (event) {
                       event.preventDefault();
@@ -108,7 +110,9 @@ const App = () => {
                     handleEnterRoom();
                   }}
                 >
-                  {loading
+                  {!address
+                    ? "Please connect your wallet first"
+                    : loading
                     ? "Loading..."
                     : error
                     ? `Error: ${error}`

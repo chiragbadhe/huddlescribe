@@ -122,6 +122,12 @@ const App = () => {
               <p className="text-[20px] pt-[20px]">
                 Waiting For others to join ...
               </p>
+              <p>
+                {" "}
+                <p className="text-[14px] mt-[12px] text-red-500">
+                  temporarily disabled for demo
+                </p>
+              </p>
             </div>
           </div>
         </div>

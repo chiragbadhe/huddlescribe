@@ -60,7 +60,7 @@ function VideoCard({}: VideoCardProps) {
     ? "loading..."
     : isError
     ? "error"
-    : data ?? "No name found 😔";
+    : data ?? "No ens found 😔";
 
   return (
     <div className="h-full">
