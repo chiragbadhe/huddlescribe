@@ -61,7 +61,7 @@ const App = () => {
               <VideoCard />
             </div>
             <div className="flex items-center justify-center mt-[20px]">
-              <Menu userJoined={true} />
+              <Menu userJoined={false} />
             </div>
           </div>
           <div className="relative  w-full flex items-center justify-center space-y-[10px] flex-col rounded-[10px] overflow-hidden ">

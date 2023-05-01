@@ -42,8 +42,6 @@ function VideoCard({}: VideoCardProps) {
   const videoElement: VideoElementRef = useRef(null);
   const audioElement: AudioElementRef = useRef(null);
 
-  const { peerIds, peers } = usePeers();
-
   useEffect(() => {
     if (camStream && videoElement.current) {
       videoElement.current.srcObject = camStream;
