@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Mic,
   MicOff,
@@ -26,6 +26,7 @@ import SpeechRecognition, {
 import useLanguageStore from "@/hooks/useLanguageStore";
 import { useVideoStore } from "@/hooks/useVideoStore";
 import { useRoomId } from "@/hooks/useRoomIdStore";
+import { toast } from "react-hot-toast";
 
 type Props = {
   userJoined: boolean;
@@ -97,11 +98,30 @@ function MenuWithState({ userJoined }: Props) {
     console.log(error);
   };
 
+  const [permission, setPermission] = useState<string | null>(null);
+
+  useEffect(() => {
+    navigator.mediaDevices
+      .getUserMedia({ audio: true, video: true })
+      .then((stream) => {
+        setPermission("granted");
+        console.log("Recording permission granted");
+      })
+      .catch((error) => {
+        console.error("Recording permission denied", error);
+        setPermission("denied");
+      });
+  }, []);
+
   const RecClick = () => {
     setIsRecOn(!isRecOn);
     if (!isRecOn) {
       startRecording(`https://huddlescribe.vercel.app/${roomId}`);
       console.log("rec started");
+      
+      if (permission === "denied") {
+        toast("rec permission denied");
+      }
     } else {
       stopRecording();
       console.log("rec stop");
