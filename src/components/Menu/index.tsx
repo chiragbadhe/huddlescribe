@@ -98,30 +98,19 @@ function MenuWithState({ userJoined }: Props) {
     console.log(error);
   };
 
-  const [permission, setPermission] = useState<string | null>(null);
-
-
   const RecClick = () => {
     setIsRecOn(!isRecOn);
     if (!isRecOn) {
-      navigator.mediaDevices
-        .getUserMedia({ audio: true, video: true })
-        .then((stream) => {
-          // permission granted, start recording
-          const mediaRecorder = new MediaRecorder(stream);
-          mediaRecorder.start();
-          startRecording(`https://huddlescribe.vercel.app/${roomId}`);
-          console.log("Recording started");
-        })
-        .catch((error) => {
-          // permission denied or some other error occurred
-          console.error("Recording Permission Error", error);
-        });
+      startRecording(`https://huddlescribe.vercel.app/${roomId}`);
     } else {
       stopRecording();
       console.log("rec stop");
     }
   };
+
+  useEffect(() => {
+    toast(recordError);
+  }, [recordError]);
 
   const HandleEndCall = () => {
     leaveRoom();
@@ -156,8 +145,6 @@ function MenuWithState({ userJoined }: Props) {
           >
             <PhoneOff />
           </button>
-
-          <div>{recordError}</div>
         </>
       )}
     </div>

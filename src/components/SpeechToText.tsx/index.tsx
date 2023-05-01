@@ -5,12 +5,16 @@ import { useEffect, useState } from "react";
 import { Ghost, Outdent } from "lucide-react";
 import useDisplayTextStore from "@/hooks/useCaptionsStore";
 import useLanguageStore from "@/hooks/useLanguageStore";
+import { useMeetingMachine } from "@huddle01/react/hooks";
 
 const SpeechToText = () => {
   const { caption, setCaption } = useDisplayTextStore();
   const [loading, setLoading] = useState(false);
 
   const { value, label } = useLanguageStore();
+
+  const { state, send } = useMeetingMachine();
+
 
   const { transcript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
@@ -35,7 +39,7 @@ const SpeechToText = () => {
       }),
     });
     console.log(response);
-    console.log("handletranslate")
+    console.log("handletranslate");
     setLoading(false);
   };
 
@@ -52,7 +56,9 @@ const SpeechToText = () => {
           <p className="text-[14px] cursor-not-allowed">ln : {label}</p>
         </div>
         <p className="opacity-70 flex mt-[15px] font-extralight	">
-          <span className="font-normal">peerId: </span>
+          <span className="font-normal">
+            {(state.context.displayName)} :
+          </span>
           <span className="pl-[10px]">{caption}</span>
         </p>
       </div>

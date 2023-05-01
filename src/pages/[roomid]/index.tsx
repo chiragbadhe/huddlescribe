@@ -15,7 +15,7 @@ import {
   useRecording,
 } from "@huddle01/react/hooks";
 
-import { useDisplayName } from "@huddle01/react/app-utils";
+import { useDisplayName, useRecorder } from "@huddle01/react/app-utils";
 import Button from "../../components/Button";
 import Header from "../../components/Header";
 import VideoCard from "../../components/Modals/VideoCard";
@@ -56,6 +56,10 @@ const App = () => {
   const [meetingDetails, setMeetingDetails] = useState<MeetingDetails>();
 
   const { peers } = usePeers();
+
+  
+
+  useRecorder(roomId, process.env.NEXT_PUBLIC_PROJECT_ID || "");
 
   useEffect(() => {
     if (!isRoomJoined) {
