@@ -116,12 +116,19 @@ function MenuWithState({ userJoined }: Props) {
   const RecClick = () => {
     setIsRecOn(!isRecOn);
     if (!isRecOn) {
-      startRecording(`https://huddlescribe.vercel.app/${roomId}`);
-      console.log("rec started");
-      
-      if (permission === "denied") {
-        toast("rec permission denied");
-      }
+      navigator.mediaDevices
+        .getUserMedia({ audio: true, video: true })
+        .then((stream) => {
+          // permission granted, start recording
+          const mediaRecorder = new MediaRecorder(stream);
+          mediaRecorder.start();
+          startRecording(`https://huddlescribe.vercel.app/${roomId}`);
+          console.log("Recording started");
+        })
+        .catch((error) => {
+          // permission denied or some other error occurred
+          console.error("Recording Permission Error", error);
+        });
     } else {
       stopRecording();
       console.log("rec stop");
