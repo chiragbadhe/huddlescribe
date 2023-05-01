@@ -8,10 +8,16 @@ import {
   Disc2,
   PhoneOff,
 } from "lucide-react";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
 
 import { useMenuStore } from "@/hooks/useMenuStore";
-import { useAudio, usePeers, useRoom, useVideo } from "@huddle01/react/hooks";
+import {
+  useAudio,
+  usePeers,
+  useRecording,
+  useRoom,
+  useVideo,
+} from "@huddle01/react/hooks";
 import { useEventListener } from "@huddle01/react";
 
 import SpeechRecognition, {
@@ -19,6 +25,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import useLanguageStore from "@/hooks/useLanguageStore";
 import { useVideoStore } from "@/hooks/useVideoStore";
+import { useRoomId } from "@/hooks/useRoomIdStore";
 
 type Props = {
   userJoined: boolean;
@@ -26,6 +33,9 @@ type Props = {
 
 function MenuWithState({ userJoined }: Props) {
   const router = Router;
+  const route = useRouter();
+
+  console.log(route.query);
 
   const { joinRoom, leaveRoom, isLoading, isRoomJoined } = useRoom();
 
@@ -43,8 +53,20 @@ function MenuWithState({ userJoined }: Props) {
 
   const { value, label } = useLanguageStore();
 
+  const { roomId } = useRoomId();
+
+  const {
+    startRecording,
+    isStarting,
+    inProgress,
+    isStopping,
+    stopRecording,
+    data,
+    error: recordError,
+  } = useRecording();
+
   const { setVideoSrc, videoSrc } = useVideoStore();
-  
+
   useEventListener("lobby:joined", () => {
     console.log("lobby:joined");
   });
@@ -77,12 +99,23 @@ function MenuWithState({ userJoined }: Props) {
 
   const RecClick = () => {
     setIsRecOn(!isRecOn);
+    if (!isRecOn) {
+      startRecording(`https://huddlescribe.vercel.app/${roomId}`);
+      console.log("rec started");
+    } else {
+      stopRecording();
+      console.log("rec stop");
+    }
   };
 
   const HandleEndCall = () => {
     leaveRoom();
     router.push("/");
   };
+
+  if (data) {
+    console.log(data);
+  }
 
   return (
     <div className="border border-white/10 rounded-[10px]  flex items-center p-[10px] px-[15px] space-x-[15px] opacity-80 cursor-pointer ">
@@ -108,6 +141,8 @@ function MenuWithState({ userJoined }: Props) {
           >
             <PhoneOff />
           </button>
+
+          <div>{recordError}</div>
         </>
       )}
     </div>
