@@ -21,8 +21,6 @@ function Mint({}: Props) {
     signerOrProvider: signer,
   });
 
-
-
   const mintNft = async () => {
     try {
       if (contract) {
@@ -32,7 +30,9 @@ function Mint({}: Props) {
             data.wait(1).then((data: any) => {
               setTokenId(data.events[0].args.tokenId.toString());
               console.log("after mint", data.events[0].args.tokenId);
-              toast(`Nft Minted ID : ${data.events[0].args.tokenId.toString()}`)
+              toast(
+                `Nft Minted ID : ${data.events[0].args.tokenId.toString()}`
+              );
             });
           }
         });
@@ -63,8 +63,12 @@ function Mint({}: Props) {
           </p>
         </div>
         <div className="bg-white/10 rounded-[10px] w-[400px] p-[20px]">
-          <p className="text-[22px] opacity-[60px]">Mint Access Nft</p>
-          <p className="opacity-40">This nft will grant you acess to use app</p>
+          <p className="text-[22px] opacity-[60px]">Mint HSB Nft HSB</p>
+          <p className="opacity-40">
+            By owning this NFT, you can unlock the ability to access
+            HuddleScribe. The minting of this NFT is open to everyone as it is a
+            demonstration.
+          </p>
           <img
             className="rounded-[10px] mt-[20px] h-[400px] w-[400px]"
             src="/nft.png"
@@ -73,7 +77,9 @@ function Mint({}: Props) {
 
           {Number(tokenId) ? (
             <div className="mt-[20px] ">
-              <p className="text-[14px]">Contract: 0x1BC1799Ab899a3bE3C25D18B3Dad36cD63d1DE6C </p>
+              <p className="text-[14px]">
+                Contract: 0x1BC1799Ab899a3bE3C25D18B3Dad36cD63d1DE6C{" "}
+              </p>
               <p className="py-[7px] rounded-[10px] mt-[10px] px-[20px] w-full bg-green-600 text-center">
                 Token ID : {tokenId}
               </p>

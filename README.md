@@ -1,39 +1,41 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welcome to HuddleScribe 🤝
 
-## Getting Started
+HuddleScribe is a next-generation meeting app that leverages cutting-edge technology to provide an innovative and cool way to conduct meetings, discussions, and webinars. Built using Huddle01 and FVM, this platform offers unique features that are accessible only through the ownership of a unique NFT. 
 
-First, run the development server:
+## Features 📙
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+HuddleScribe offers a wide range of features that make it stand out from other meeting apps. These include:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Live Transcription:** The app's live transcription feature supports up to 77 languages, making it easy to communicate with people from different parts of the world.
+- **Live Captions:** The live captions feature allows you to follow along with ease and clarity, ensuring that everyone is on the same page.
+- **Summarization Function:** With HuddleScribe's summarization function, you can summarize lengthy meetings using OpenAI. This feature ensures that everyone stays informed and engaged.
+- **Token Gated Access:** HuddleScribe offers token gated access to ensure that only authorized users can access the app. By owning a unique NFT, users can unlock the full potential of HuddleScribe and gain access to all of its features.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Upcoming Features 🆕
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+HuddleScribe is constantly improving and adding new features to enhance your meeting experience. Some of our upcoming features include:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- **Dashboard for Meetings:** HuddleScribe will soon offer a dashboard for meetings, where you can view all your upcoming meetings, manage your schedules, and track your progress.
+- **Encrypted Video Recordings:** HuddleScribe will soon support encrypted video recordings that will be stored on the Filecoin network for added security and privacy.
+- **Summarize Data Storage:** With HuddleScribe's upcoming feature, you will be able to store summarized data and view it on your dashboard for easy reference.
+- **Native Language Support:** HuddleScribe is expanding its language support to include more native languages, making it more accessible to people around the world.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Getting Started 💥
 
-## Learn More
+To get started with HuddleScribe, you will need to mint your own NFT from the mint page `/mint`. Once you own the NFT, you can access HuddleScribe and start your meetings in a whole new way. 
 
-To learn more about Next.js, take a look at the following resources:
+## Installation ✅
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To install HuddleScribe, follow these steps:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+1. Clone the repository
+2. Install the dependencies using `yarn install`
+3. Start the app using `yarn run dev`
 
-## Deploy on Vercel
+## Usage 📈
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To use HuddleScribe, simply mint your own NFT from the mint page `/mint`, and you're ready to go! With this NFT, you can access HuddleScribe and start your meetings in a whole new way. 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# huddlescribe
+## Support ✊
+
+If you encounter any issues while using HuddleScribe, please open a new issue on the GitHub repository. 
