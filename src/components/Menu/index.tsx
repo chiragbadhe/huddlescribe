@@ -108,9 +108,6 @@ function MenuWithState({ userJoined }: Props) {
     }
   };
 
-  useEffect(() => {
-    toast(recordError);
-  }, [recordError]);
 
   const HandleEndCall = () => {
     leaveRoom();

@@ -4,7 +4,7 @@ import { Avatar } from "connectkit";
 import { useAccount } from "wagmi";
 import { useMenuStore } from "@/hooks/useMenuStore";
 import { Mic, MicOff } from "lucide-react";
-import { useAudio, usePeers, useVideo } from "@huddle01/react/hooks";
+import { useAudio, useMeetingMachine, usePeers, useRoom, useVideo } from "@huddle01/react/hooks";
 import useDisplayTextStore from "@/hooks/useCaptionsStore";
 import { useEnsName } from "wagmi";
 import { useDisplayName } from "@huddle01/react/app-utils";
@@ -41,6 +41,12 @@ function VideoCard({}: VideoCardProps) {
 
   const videoElement: VideoElementRef = useRef(null);
   const audioElement: AudioElementRef = useRef(null);
+
+  const { joinRoom, isRoomJoined } = useRoom();
+
+  const { state, send } = useMeetingMachine();
+
+
 
   useEffect(() => {
     if (camStream && videoElement.current) {
@@ -82,7 +88,8 @@ function VideoCard({}: VideoCardProps) {
               <Avatar size={115} address={address} />
             </div>
           </div>
-          <p className="pt-[10px] opacity-70">{name}</p>
+          
+          <p className="pt-[10px] opacity-70">{isRoomJoined ? name : state.context.displayName}</p>
         </div>
       )}
 

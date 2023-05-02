@@ -1,14 +1,14 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
 import { WagmiConfig, createClient } from "wagmi";
-import { ConnectKitProvider, getDefaultClient } from "connectkit";
 
-const alchemyId = process.env.ALCHEMY_ID;
+import { ConnectKitProvider, getDefaultClient } from "connectkit";
+import { filecoinHyperspace } from "wagmi/chains";
 
 const client = createClient(
   getDefaultClient({
     appName: "Your App Name",
-    alchemyId,
+    chains: [filecoinHyperspace],
   })
 );
 

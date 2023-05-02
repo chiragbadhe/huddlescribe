@@ -5,24 +5,23 @@ import Button from "../components/Button";
 import Header from "../components/Header";
 import VideoCard from "../components/Modals/VideoCard";
 import Menu from "../components/Menu";
-import { Avatar } from "connectkit";
 import Router from "next/router";
 import toast, { Toaster } from "react-hot-toast";
-import { useMenuStore } from "@/hooks/useMenuStore";
 import { useRoomId } from "@/hooks/useRoomIdStore";
 import InitHuddle from "@/components/InitHuddle";
-import { Text } from "lucide-react";
-
 import { useDisplayName } from "@huddle01/react/app-utils";
-import { useAccount } from "wagmi";
+import { useAccount, useContractRead } from "wagmi";
+import HSB_ABI from "@/utils/hsbabi.json";
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [displayNameText, setDisplayNameText] = useState("");
+  const [displayNameText, setDisplayNameText] = useState("Guest");
   const { error } = useLobby();
   const { roomId } = useRoomId();
   const { joinLobby } = useLobby();
   const { address, isConnecting, isDisconnected } = useAccount();
+
+  const [tokenId, setTokenId] = useState<string | undefined>();
 
   const {
     setDisplayName,
@@ -44,6 +43,18 @@ const App = () => {
     console.log("lobby:joined", displayName);
     toast("Lobby joined");
   });
+
+  const { data: balance } = useContractRead({
+    address: "0x1BC1799Ab899a3bE3C25D18B3Dad36cD63d1DE6C",
+    abi: HSB_ABI,
+    functionName: "balanceOf",
+    args: [address],
+    onSuccess(data) {
+      setTokenId(data?.toString());
+    },
+  });
+
+  const isNFT = parseInt(tokenId || "0", 10);
 
   return (
     <div className="relative overflow-hidden pb-[40px] min-h-screen">
@@ -77,48 +88,56 @@ const App = () => {
                 broadcasting a messy house 🏠 to the world 🌎 - do a quick hair
                 check and tidy up any evidence of your untidy lifestyle 🧹.
               </p>
-              <input
-                type="text"
-                placeholder="Display name here 🖊️"
-                value={displayNameText}
-                onChange={(e) => setDisplayNameText(e.target.value)}
-                className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
-              />
-              <div>
-                <Button
-                  disabled={loading}
-                  onClick={(event?: React.MouseEvent<HTMLButtonElement>) => {
-                    if (event) {
-                      event.preventDefault();
-                    }
-                    handleEnterLobby();
-                  }}
-                >
-                  {loading
-                    ? "Loading..."
-                    : error
-                    ? `Error: ${error}`
-                    : "Enter Lobby"}
-                </Button>
 
-                <Button
-                  disabled={loading || !address}
-                  onClick={(event?: React.MouseEvent<HTMLButtonElement>) => {
-                    if (event) {
-                      event.preventDefault();
-                    }
-                    handleEnterRoom();
-                  }}
-                >
-                  {!address
-                    ? "Please connect your wallet first"
-                    : loading
-                    ? "Loading..."
-                    : error
-                    ? `Error: ${error}`
-                    : "Enter Room"}
-                </Button>
-              </div>
+              {isNFT ? (
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Display name here 🖊️"
+                    value={displayNameText}
+                    onChange={(e) => setDisplayNameText(e.target.value)}
+                    className="mt-[26px] rounded-[10px] w-full px-[20px] py-[10px] text-16px bg-white/5 border border-white/10 outline-none"
+                  />
+                  <div>
+                    <Button
+                      disabled={loading || !address}
+                      onClick={(
+                        event?: React.MouseEvent<HTMLButtonElement>
+                      ) => {
+                        if (event) {
+                          event.preventDefault();
+                        }
+                        handleEnterRoom();
+                      }}
+                    >
+                      {!address
+                        ? "Please connect your wallet first"
+                        : loading
+                        ? "Loading..."
+                        : error
+                        ? `Error: ${error}`
+                        : "Enter Room"}
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <Button
+                    disabled={isNFT ? false : true}
+                    onClick={() => console.log("")}
+                  >
+                    Please Get Mint NFT to Access App
+                  </Button>
+                  <div className="flex items-center ">
+                    <button
+                      onClick={() => Router.push("/mint")}
+                      className="mt-[20px] cursor-pointer text-cyan-500 text-center w-full"
+                    >
+                      Get Access NFT
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
