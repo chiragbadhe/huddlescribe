@@ -1,4 +1,5 @@
 import "regenerator-runtime/runtime";
+import Typewriter from "typewriter-effect";
 
 import { useSpeechRecognition } from "react-speech-recognition";
 import { useEffect, useState } from "react";
@@ -8,31 +9,19 @@ import useLanguageStore from "@/hooks/useLanguageStore";
 import { useMeetingMachine } from "@huddle01/react/hooks";
 
 import { create } from "ipfs-http-client"; // named export
+import toast from "react-hot-toast";
 
 const SpeechToText = () => {
   const { caption, setCaption } = useDisplayTextStore();
   const [loading, setLoading] = useState(false);
 
-  const [summary, setSummary] = useState(
-    "Say goodbye to boring call summaries! Our system uses OpenAI tech to process call captions and generate a comprehensive summary. Never struggle to remember details again. Let our system do the work for you. Its the coolest thing since sliced bread!"
-  );
+  const [summary, setSummary] = useState("");
   const { value, label } = useLanguageStore();
 
   const { state, send } = useMeetingMachine();
 
   const { transcript, browserSupportsSpeechRecognition } =
     useSpeechRecognition();
-
-  const handleIpfsSummary = async () => {
-    setLoading(true);
-    const ipfs = create({ host: 'localhost', port: 5001, protocol: 'http' });
-    const buffer = Buffer.from(summary);
-    const ipfsResponse = await ipfs.add(buffer);
-    const cid = ipfsResponse.cid.toString();
-
-    console.log("Summary CID:", cid);
-    setLoading(false);
-  };
 
   useEffect(() => {
     setCaption(transcript);
@@ -43,21 +32,25 @@ const SpeechToText = () => {
   }
 
   const handleSummarize = async () => {
-    setLoading(true);
-    const response = await fetch("/api/getsummary", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        prompt: `${caption} summarise this dialogues `,
-      }),
-    });
-    console.log(response);
-    console.log("handletranslate");
-    setLoading(false);
+    try {
+      setLoading(true);
+      const response = await fetch("/api/getsummary", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt: `${caption} summarise this dialogues `,
+        }),
+      });
+      const summaryText = await response.text();
+      setSummary(summaryText);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      toast("Open Ai Error");
+    }
   };
-
   return (
     <div className="flex border mt-[25px] rounded-[10px] border-white/10">
       <div className="border-r w-1/2 border-white/10 p-[20px] ">
@@ -93,10 +86,14 @@ const SpeechToText = () => {
             {loading ? "Fetching Summary..." : "Generate Summary"}
           </button>
         </div>
-        <p className="opacity-70 flex mt-[15px] font-extralight">
-          <span>{summary}</span>
-        </p>
 
+        <div className="opacity-70 flex mt-[15px] font-extralight">
+          <Typewriter
+            onInit={(typewriter) => {
+              typewriter.typeString(summary).start();
+            }}
+          />
+        </div>
       </div>
     </div>
   );
