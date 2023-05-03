@@ -26,27 +26,17 @@ type AudioElementRef = MutableRefObject<HTMLAudioElement | null>;
 function VideoCard({}: VideoCardProps) {
   const { stream: camStream } = useVideo();
   const { stream: audioStream } = useAudio();
-
   const { error: displayNameError, displayName } = useDisplayName();
-
-
   const { caption, setCaption } = useDisplayTextStore();
-
   const { address } = useAccount();
   const { data, isError, isLoading } = useEnsName({
     address: address,
   });
-
   const { isMicOn, isCamOn } = useMenuStore();
-
   const videoElement: VideoElementRef = useRef(null);
   const audioElement: AudioElementRef = useRef(null);
-
   const { joinRoom, isRoomJoined } = useRoom();
-
   const { state, send } = useMeetingMachine();
-
-
 
   useEffect(() => {
     if (camStream && videoElement.current) {
@@ -59,12 +49,17 @@ function VideoCard({}: VideoCardProps) {
 
   const captionWords = caption.split(" ").slice(-10);
   const captionText = captionWords.join(" ");
+  const MAX_ADDRESS_LENGTH = 8; // Change the value to the desired length
 
   const name = isLoading
     ? "loading..."
     : isError
     ? "error"
-    : data ?? "No ens found 😔";
+    : data ?? "No name found 😔";
+  
+  const nameDisplayed = name === "No ens found 😔"
+    ? name
+    : `${address?.slice(0, MAX_ADDRESS_LENGTH)}...`;
 
   return (
     <div className="h-full">
@@ -89,7 +84,7 @@ function VideoCard({}: VideoCardProps) {
             </div>
           </div>
           
-          <p className="pt-[10px] opacity-70">{isRoomJoined ? name : state.context.displayName}</p>
+          <p className="pt-[10px] opacity-70">{isRoomJoined ? state.context.displayName : nameDisplayed  }</p>
         </div>
       )}
 

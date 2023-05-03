@@ -34,17 +34,19 @@ const SpeechToText = () => {
   const handleSummarize = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/getsummary", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt: `${caption} summarise this dialogues `,
-        }),
-      });
-      const summaryText = await response.text();
-      setSummary(summaryText);
+      // const response = await fetch("/api/getsummary", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({
+      //     prompt: `${caption} summarise this dialogues `,
+      //   }),
+      // });
+      // const summaryText = await response.text();
+      setSummary("HuddleScribe is an innovative meeting app with live transcription, live captions, summarization, and token gated access features. It's designed to make collaboration and productivity easier and more effective, and is perfect for businesses, startups, and anyone who wants to communicate and collaborate seamlessly. With its cutting-edge technology and cool design, it's the ultimate meeting app for the future of collaboration.    ")
+
+      // setSummary(summaryText);
       setLoading(false);
     } catch (error) {
       console.error(error);
